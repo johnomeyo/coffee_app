@@ -1,6 +1,6 @@
 import 'package:coffee_app/constants/data.dart';
-import 'package:coffee_app/homepage/pages/farmers_details_page.dart'
-    show FarmerDetailPage;
+import 'package:coffee_app/homepage/pages/farmers_details_page.dart' show FarmerDetailsPage;
+
 import 'package:coffee_app/homepage/widgets/farmer_stats.dart';
 import 'package:coffee_app/homepage/widgets/farmers_list.dart' show FarmersList;
 import 'package:coffee_app/homepage/widgets/search_bar.dart';
@@ -64,7 +64,7 @@ class FarmersHomePageState extends State<FarmersHomePage> {
   void _onFarmerTap(Farmer farmer) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => FarmerDetailPage(farmer: farmer)),
+      MaterialPageRoute(builder: (context) => FarmerDetailsPage(farmer: farmer)),
     );
   }
 }
