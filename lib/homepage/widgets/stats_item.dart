@@ -1,12 +1,11 @@
-// Stats Item Widget
 import 'package:flutter/material.dart';
 
-class StatsItem extends StatelessWidget {
+class StatItem extends StatelessWidget {
   final IconData icon;
   final String label;
   final String value;
 
-  const StatsItem({
+  const StatItem({
     super.key,
     required this.icon,
     required this.label,
@@ -16,9 +15,10 @@ class StatsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 32, color: Theme.of(context).colorScheme.primary),
-        const SizedBox(height: 8),
+        Icon(icon, size: 24, color: Theme.of(context).colorScheme.primary),
+        const SizedBox(height: 4),
         Text(
           value,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -26,7 +26,14 @@ class StatsItem extends StatelessWidget {
             color: Theme.of(context).colorScheme.primary,
           ),
         ),
-        Text(label, style: Theme.of(context).textTheme.bodySmall),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.7),
+          ),
+        ),
       ],
     );
   }

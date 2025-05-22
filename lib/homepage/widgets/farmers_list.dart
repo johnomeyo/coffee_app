@@ -1,6 +1,6 @@
 // Farmers List Widget
 import 'package:coffee_app/homepage/widgets/empty_state.dart' show EmptyState;
-import 'package:coffee_app/homepage/widgets/farmer_card.dart' show FarmerCard;
+import 'package:coffee_app/homepage/widgets/farmer_card.dart';
 import 'package:coffee_app/models/data_models.dart' show Farmer;
 import 'package:flutter/material.dart';
 

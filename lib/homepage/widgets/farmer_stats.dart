@@ -9,27 +9,27 @@ class FarmersStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          StatsItem(
-            icon: Icons.people,
-            label: 'Total Farmers',
-            value: totalFarmers.toString(),
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              StatItem(
+                icon: Icons.people,
+                label: 'Total Farmers',
+                value: totalFarmers.toString(),
+              ),
+              StatItem(
+                icon: Icons.agriculture,
+                label: 'Active Farms',
+                value: _getTotalFarms().toString(),
+              ),
+            ],
           ),
-          StatsItem(
-            icon: Icons.agriculture,
-            label: 'Active Farms',
-            value: _getTotalFarms().toString(),
-          ),
-        ],
+        ),
       ),
     );
   }
