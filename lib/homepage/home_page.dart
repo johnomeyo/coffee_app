@@ -1,7 +1,6 @@
 import 'package:coffee_app/constants/data.dart';
-import 'package:coffee_app/homepage/pages/farmers_details_page.dart' show FarmerDetailsPage;
-
-import 'package:coffee_app/homepage/widgets/farmer_stats.dart';
+import 'package:coffee_app/homepage/pages/farmers_details_page.dart'
+    show FarmerDetailsPage;
 import 'package:coffee_app/homepage/widgets/farmers_list.dart' show FarmersList;
 import 'package:coffee_app/homepage/widgets/search_bar.dart';
 import 'package:coffee_app/models/data_models.dart' show Farmer;
@@ -33,23 +32,26 @@ class FarmersHomePageState extends State<FarmersHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final bool hasFarmers = farmers.isNotEmpty;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'Farmers Directory',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        centerTitle: true,
       ),
       body: Column(
         children: [
-          CustomSearchbar(
-            onSearchChanged: (query) {
-              setState(() {
-                searchQuery = query;
-              });
-            },
-          ),
-          FarmersStats(totalFarmers: farmers.length),
+          if (hasFarmers)
+            CustomSearchbar(
+              onSearchChanged: (query) {
+                setState(() {
+                  searchQuery = query;
+                });
+              },
+            ),
           Expanded(
             child: FarmersList(
               farmers: filteredFarmers,
@@ -64,7 +66,9 @@ class FarmersHomePageState extends State<FarmersHomePage> {
   void _onFarmerTap(Farmer farmer) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => FarmerDetailsPage(farmer: farmer)),
+      MaterialPageRoute(
+        builder: (context) => FarmerDetailsPage(farmer: farmer),
+      ),
     );
   }
 }

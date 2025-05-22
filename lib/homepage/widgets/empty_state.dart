@@ -68,99 +68,101 @@ class _EmptyStateState extends State<EmptyState>
           builder: (context, child) {
             return FadeTransition(
               opacity: _fadeAnimation,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Animated icon with background circle
-                  ScaleTransition(
-                    scale: _scaleAnimation,
-                    child: Container(
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: colorScheme.primary.withValues(alpha: 0.1),
-                        border: Border.all(
-                          color: colorScheme.primary.withValues(alpha: 0.2),
-                          width: 2,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Animated icon with background circle
+                    ScaleTransition(
+                      scale: _scaleAnimation,
+                      child: Container(
+                        width: 120,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: colorScheme.primary.withValues(alpha: 0.1),
+                          border: Border.all(
+                            color: colorScheme.primary.withValues(alpha: 0.2),
+                            width: 2,
+                          ),
                         ),
-                      ),
-                      child: Icon(
-                        Icons.agriculture_outlined,
-                        size: 64,
-                        color: colorScheme.primary.withValues(alpha: 0.7),
+                        child: Icon(
+                          Icons.agriculture_outlined,
+                          size: 64,
+                          color: colorScheme.primary.withValues(alpha: 0.7),
+                        ),
                       ),
                     ),
-                  ),
-
-                  const SizedBox(height: 32),
-
-                  // Main message with slide animation
-                  SlideTransition(
-                    position: _slideAnimation,
-                    child: Column(
-                      children: [
-                        Text(
-                          'No farmers found',
-                          style: theme.textTheme.headlineSmall?.copyWith(
-                            color: colorScheme.onSurface,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-
-                        const SizedBox(height: 12),
-
-                        Container(
-                          constraints: const BoxConstraints(maxWidth: 280),
-                          child: Text(
-                            'No farmers found. Try adding a new farmer to get started.',
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              color: colorScheme.onSurface.withValues(
-                                alpha: 0.7,
-                              ),
-                              height: 1.5,
+                
+                    const SizedBox(height: 32),
+                
+                    // Main message with slide animation
+                    SlideTransition(
+                      position: _slideAnimation,
+                      child: Column(
+                        children: [
+                          Text(
+                            'No farmers found',
+                            style: theme.textTheme.headlineSmall?.copyWith(
+                              color: colorScheme.onSurface,
+                              fontWeight: FontWeight.w600,
                             ),
                             textAlign: TextAlign.center,
                           ),
-                        ),
-
-                        const SizedBox(height: 32),
-
-                        // Action buttons
-                        Wrap(
-                          spacing: 12,
-                          runSpacing: 12,
-                          children: [
-   
-
-                            FilledButton.tonal(
-                              onPressed: () {
-                                // Refresh action
-                                _animationController.reset();
-                                _animationController.forward();
-                              },
-                              style: FilledButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 12,
+                
+                          const SizedBox(height: 12),
+                
+                          Container(
+                            constraints: const BoxConstraints(maxWidth: 280),
+                            child: Text(
+                              'No farmers found. Try adding a new farmer to get started.',
+                              style: theme.textTheme.bodyLarge?.copyWith(
+                                color: colorScheme.onSurface.withValues(
+                                  alpha: 0.7,
+                                ),
+                                height: 1.5,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                
+                          const SizedBox(height: 32),
+                
+                          // Action buttons
+                          Wrap(
+                            spacing: 12,
+                            runSpacing: 12,
+                            children: [
+                   
+                
+                              FilledButton.tonal(
+                                onPressed: () {
+                                  // Refresh action
+                                  _animationController.reset();
+                                  _animationController.forward();
+                                },
+                                style: FilledButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 12,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.refresh, size: 18),
+                                    const SizedBox(width: 8),
+                                    Text('Add Farmer'),
+                                  ],
                                 ),
                               ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(Icons.refresh, size: 18),
-                                  const SizedBox(width: 8),
-                                  Text('Add Farmer'),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },

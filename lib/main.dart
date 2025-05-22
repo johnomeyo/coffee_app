@@ -5,7 +5,6 @@ void main() {
   runApp(const MyApp());
 }
 
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -16,21 +15,20 @@ class MyApp extends StatelessWidget {
       title: 'Coffee App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.green.shade700,
+          seedColor: Colors.blue.shade700,
           brightness: Brightness.light,
         ),
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.green.shade700,
+          seedColor: Colors.blue.shade700,
           brightness: Brightness.dark,
         ),
         useMaterial3: true,
       ),
-      themeMode: ThemeMode.system, // Uses system setting (light/dark)
+      themeMode: ThemeMode.system,
       home: const AuthPage(),
     );
   }
 }
-
