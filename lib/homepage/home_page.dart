@@ -7,7 +7,6 @@ import 'package:coffee_app/homepage/widgets/search_bar.dart';
 import 'package:coffee_app/models/data_models.dart' show Farmer;
 import 'package:flutter/material.dart';
 
-// Homepage Widget
 class FarmersHomePage extends StatefulWidget {
   const FarmersHomePage({super.key});
 

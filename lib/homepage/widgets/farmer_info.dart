@@ -12,6 +12,7 @@ class FarmerInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         InfoChip(icon: Icons.location_on, label: farmer.village),
         const SizedBox(width: 8),
