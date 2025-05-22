@@ -5,6 +5,7 @@ import 'package:coffee_app/auth/widgets/custom_checkbox.dart';
 import 'package:coffee_app/auth/widgets/custom_textfield.dart';
 import 'package:coffee_app/auth/widgets/divider_with_text.dart';
 import 'package:coffee_app/auth/widgets/social_sign_in_btn.dart';
+import 'package:coffee_app/homepage/home_page.dart';
 import 'package:flutter/material.dart';
 
 class SignInForm extends StatefulWidget {
@@ -116,9 +117,7 @@ class _SignInFormState extends State<SignInForm> {
               ),
               TextButton(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Forgot password clicked')),
-                  );
+                 Navigator.push(context, MaterialPageRoute(builder: (context) => const FarmersHomePage()));
                 },
                 child: Text(
                   'Forgot Password?',
