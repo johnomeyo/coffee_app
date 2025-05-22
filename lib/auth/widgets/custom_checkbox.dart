@@ -23,12 +23,7 @@ class CustomCheckbox extends StatelessWidget {
         SizedBox(
           width: 20,
           height: 20,
-          child: Checkbox(
-            value: value,
-            onChanged: onChanged,
-            activeColor: theme.primaryColor,
-            checkColor: theme.colorScheme.onPrimary,
-          ),
+          child: Checkbox(value: value, onChanged: onChanged),
         ),
         const SizedBox(width: 8),
         Flexible(

@@ -21,35 +21,15 @@ class CustomButton extends StatelessWidget {
 
     return SizedBox(
       height: 56,
-      child: ElevatedButton(
+      child: FilledButton(
         onPressed: isLoading ? null : onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isOutlined ? Colors.transparent : theme.primaryColor,
-          foregroundColor:
-              isOutlined ? theme.primaryColor : theme.colorScheme.onPrimary,
-          elevation: isOutlined ? 0 : 2,
-          shadowColor: theme.primaryColor.withValues(alpha: 0.3),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side:
-                isOutlined
-                    ? BorderSide(color: theme.primaryColor)
-                    : BorderSide.none,
-          ),
-        ),
+
         child:
             isLoading
                 ? SizedBox(
                   width: 20,
                   height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      isOutlined
-                          ? theme.primaryColor
-                          : theme.colorScheme.onPrimary,
-                    ),
-                  ),
+                  child: CircularProgressIndicator.adaptive(),
                 )
                 : Text(
                   text,

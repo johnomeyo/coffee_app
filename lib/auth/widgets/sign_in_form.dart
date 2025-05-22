@@ -123,7 +123,7 @@ class _SignInFormState extends State<SignInForm> {
                 child: Text(
                   'Forgot Password?',
                   style: TextStyle(
-                    color: Theme.of(context).primaryColor,
+                    // color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -141,7 +141,7 @@ class _SignInFormState extends State<SignInForm> {
           const SizedBox(height: 20),
           SocialSignInButton(
             text: 'Continue with Google',
-            icon: Icons.login,
+            icon: Icons.apple,
             onPressed: _signInWithGoogle,
             isLoading: _isLoading,
           ),
@@ -158,7 +158,7 @@ class _SignInFormState extends State<SignInForm> {
                 child: Text(
                   'Sign Up',
                   style: TextStyle(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
