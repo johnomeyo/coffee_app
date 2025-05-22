@@ -168,7 +168,6 @@ class _SignUpFormState extends State<SignUpForm> {
           const SizedBox(height: 20),
           SocialSignInButton(
             text: 'Sign up with Google',
-            icon: Icons.login,
             onPressed: _signUpWithGoogle,
             isLoading: _isLoading,
           ),

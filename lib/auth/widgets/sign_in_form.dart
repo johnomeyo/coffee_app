@@ -1,4 +1,3 @@
-
 // Sign In Form Component
 import 'package:coffee_app/auth/widgets/custom_btn.dart';
 import 'package:coffee_app/auth/widgets/custom_checkbox.dart';
@@ -11,10 +10,7 @@ import 'package:flutter/material.dart';
 class SignInForm extends StatefulWidget {
   final VoidCallback onToggleMode;
 
-  const SignInForm({
-    super.key,
-    required this.onToggleMode,
-  });
+  const SignInForm({super.key, required this.onToggleMode});
 
   @override
   State<SignInForm> createState() => _SignInFormState();
@@ -34,31 +30,35 @@ class _SignInFormState extends State<SignInForm> {
     super.dispose();
   }
 
-  Future<void> _signInWithEmail() async {
+  Future<void> _signInWithEmail(BuildContext context) async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
-    
+
     // Simulate API call
     await Future.delayed(const Duration(seconds: 2));
-    
+
     setState(() => _isLoading = false);
-    
+
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Sign in successful!')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Sign in successful!')));
     }
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const FarmersHomePage()),
+    );
   }
 
   Future<void> _signInWithGoogle() async {
     setState(() => _isLoading = true);
-    
+
     // Simulate Google Sign In
     await Future.delayed(const Duration(seconds: 2));
-    
+
     setState(() => _isLoading = false);
-    
+
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Google sign in successful!')),
@@ -83,7 +83,9 @@ class _SignInFormState extends State<SignInForm> {
               if (value == null || value.isEmpty) {
                 return 'Please enter your email';
               }
-              if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+              if (!RegExp(
+                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+              ).hasMatch(value)) {
                 return 'Please enter a valid email';
               }
               return null;
@@ -112,13 +114,12 @@ class _SignInFormState extends State<SignInForm> {
             children: [
               CustomCheckbox(
                 value: _rememberMe,
-                onChanged: (value) => setState(() => _rememberMe = value ?? false),
+                onChanged:
+                    (value) => setState(() => _rememberMe = value ?? false),
                 label: 'Remember me',
               ),
               TextButton(
-                onPressed: () {
-                 Navigator.push(context, MaterialPageRoute(builder: (context) => const FarmersHomePage()));
-                },
+                onPressed: () {},
                 child: Text(
                   'Forgot Password?',
                   style: TextStyle(
@@ -132,7 +133,7 @@ class _SignInFormState extends State<SignInForm> {
           const SizedBox(height: 24),
           CustomButton(
             text: 'Sign In',
-            onPressed: _signInWithEmail,
+            onPressed: () => _signInWithEmail(context),
             isLoading: _isLoading,
           ),
           const SizedBox(height: 20),
@@ -140,7 +141,6 @@ class _SignInFormState extends State<SignInForm> {
           const SizedBox(height: 20),
           SocialSignInButton(
             text: 'Continue with Google',
-            icon: Icons.apple,
             onPressed: _signInWithGoogle,
             isLoading: _isLoading,
           ),
@@ -169,4 +169,3 @@ class _SignInFormState extends State<SignInForm> {
     );
   }
 }
-

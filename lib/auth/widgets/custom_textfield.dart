@@ -41,7 +41,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           widget.label,
           style: theme.textTheme.labelLarge?.copyWith(
             fontWeight: FontWeight.w500,
-            color: theme.colorScheme.onSurface,
+            // color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),

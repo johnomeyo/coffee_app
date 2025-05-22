@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 
 class SocialSignInButton extends StatelessWidget {
   final String text;
-  final IconData icon;
   final VoidCallback onPressed;
   final bool isLoading;
 
   const SocialSignInButton({
     super.key,
     required this.text,
-    required this.icon,
     required this.onPressed,
     this.isLoading = false,
   });
@@ -44,7 +42,11 @@ class SocialSignInButton extends StatelessWidget {
                 : Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(icon, color: theme.colorScheme.onSurface),
+                    Image.asset(
+                      'assets/google_icon.png',
+                      width: 24,
+                      height: 24,
+                    ),
                     const SizedBox(width: 12),
                     Text(
                       text,

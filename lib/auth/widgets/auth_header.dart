@@ -1,4 +1,3 @@
-// Auth Header Component
 import 'package:flutter/material.dart';
 
 class AuthHeader extends StatelessWidget {
@@ -13,13 +12,18 @@ class AuthHeader extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 80,
-          height: 80,
+          width: 100,
+          height: 100,
           decoration: BoxDecoration(
-            color: theme.primaryColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Icon(Icons.lock_outline, size: 40, color: theme.primaryColor),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assets/cirad_logo.png',
+              fit: BoxFit.contain,
+            ),
+          ),
         ),
         const SizedBox(height: 24),
         Text(

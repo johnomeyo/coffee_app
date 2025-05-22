@@ -61,10 +61,8 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
           'Farmer Registration',
@@ -79,7 +77,7 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage>
           controller: _tabController,
           indicatorColor: theme.primaryColor,
           labelColor: theme.primaryColor,
-          unselectedLabelColor: theme.textTheme.bodyMedium?.color?.withOpacity(0.6),
+          unselectedLabelColor: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.6),
           tabs: const [
             Tab(text: 'Personal Info'),
             Tab(text: 'Farm Details'),
@@ -273,7 +271,7 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage>
       }
       
       // Create farmer and farm objects
-      final farmer = _createFarmer();
+      // final farmer = _createFarmer();
       _showSnackBar('Registration completed successfully!');
       // Handle submission logic here
     }
@@ -291,7 +289,7 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage>
     return true;
   }
 
-  Farmer _createFarmer() {
+  Farmer createFarmer() {
     final farm = Farm(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       name: _farmNameController.text,
