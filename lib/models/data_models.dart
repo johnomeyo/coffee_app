@@ -4,10 +4,10 @@ class Farm {
   final String name;
   final double size;
   final String cropType;
-  final List<String> images; // Added: List of image URLs/paths
-  final String location; // Added: Farm location
-  final bool isApproved; // Added: Approval status
-  final String? additionalInfo; // Added: Optional additional information
+  final List<String> images; 
+  final String location; 
+  final bool isApproved; 
+  final String? additionalInfo; 
 
   const Farm({
     required this.id,

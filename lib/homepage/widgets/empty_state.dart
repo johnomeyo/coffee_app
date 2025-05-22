@@ -1,3 +1,4 @@
+import 'package:coffee_app/registration/farmer_registration_page.dart';
 import 'package:flutter/material.dart';
 
 class EmptyState extends StatefulWidget {
@@ -93,9 +94,9 @@ class _EmptyStateState extends State<EmptyState>
                         ),
                       ),
                     ),
-                
+
                     const SizedBox(height: 32),
-                
+
                     // Main message with slide animation
                     SlideTransition(
                       position: _slideAnimation,
@@ -109,9 +110,9 @@ class _EmptyStateState extends State<EmptyState>
                             ),
                             textAlign: TextAlign.center,
                           ),
-                
+
                           const SizedBox(height: 12),
-                
+
                           Container(
                             constraints: const BoxConstraints(maxWidth: 280),
                             child: Text(
@@ -125,21 +126,24 @@ class _EmptyStateState extends State<EmptyState>
                               textAlign: TextAlign.center,
                             ),
                           ),
-                
+
                           const SizedBox(height: 32),
-                
+
                           // Action buttons
                           Wrap(
                             spacing: 12,
                             runSpacing: 12,
                             children: [
-                   
-                
                               FilledButton.tonal(
                                 onPressed: () {
-                                  // Refresh action
-                                  _animationController.reset();
-                                  _animationController.forward();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return const FarmerRegistrationPage();
+                                      },
+                                    ),
+                                  );
                                 },
                                 style: FilledButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(
@@ -150,7 +154,10 @@ class _EmptyStateState extends State<EmptyState>
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(Icons.refresh, size: 18),
+                                    Icon(
+                                      Icons.add_circle_outline_sharp,
+                                      size: 18,
+                                    ),
                                     const SizedBox(width: 8),
                                     Text('Add Farmer'),
                                   ],
