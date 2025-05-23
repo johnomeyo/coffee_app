@@ -1,4 +1,4 @@
-import 'package:coffee_app/auth/auth_page.dart';
+import 'package:coffee_app/homepage/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       themeMode: ThemeMode.system,
-      home: const AuthPage(),
+      home: const FarmersHomePage(),
     );
   }
 }
