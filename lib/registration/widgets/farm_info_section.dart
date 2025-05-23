@@ -1,8 +1,8 @@
 // Farm Information Section
-import 'package:coffee_app/registration/farmer_registration_page.dart';
 import 'package:coffee_app/registration/widgets/coffee_dopdown.dart';
 import 'package:coffee_app/registration/widgets/disturbance_dropdown.dart';
 import 'package:coffee_app/registration/widgets/farm_textfield.dart';
+import 'package:coffee_app/registration/widgets/form_controller.dart';
 import 'package:coffee_app/registration/widgets/image_picker.dart';
 import 'package:coffee_app/registration/widgets/location_input.dart';
 import 'package:coffee_app/registration/widgets/section_header.dart';

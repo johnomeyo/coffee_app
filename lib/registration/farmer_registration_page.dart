@@ -1,9 +1,9 @@
 import 'package:coffee_app/registration/widgets/farm_info_section.dart';
 import 'package:coffee_app/registration/widgets/farmer_info_section.dart';
+import 'package:coffee_app/registration/widgets/form_controller.dart';
 import 'package:coffee_app/registration/widgets/registration_navigation_btns.dart';
 import 'package:coffee_app/registration/widgets/registrationn_progress_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 // Main Registration Page
 class FarmerRegistrationPage extends StatefulWidget {
@@ -18,7 +18,7 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
   final _pageController = PageController();
   int _currentPageIndex = 0;
   bool _hasLocation = false; // Track location status
-
+  final _farmerInfoFormKey = GlobalKey<FormState>();
   // Form Controllers
   final _farmerControllers = FarmerFormControllers();
   final _farmControllers = FarmFormControllers();
@@ -40,8 +40,9 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
 
   void _checkLocationStatus() {
     setState(() {
-      _hasLocation = _farmControllers.latitudeController.text.isNotEmpty && 
-                    _farmControllers.longitudeController.text.isNotEmpty;
+      _hasLocation =
+          _farmControllers.latitudeController.text.isNotEmpty &&
+          _farmControllers.longitudeController.text.isNotEmpty;
     });
   }
 
@@ -50,11 +51,17 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
   }
 
   void _nextPage() {
-    if (_currentPageIndex < 1) {
+    if (_farmerInfoFormKey.currentState!.validate()) {
+      // If the form is valid, proceed to the next page
+      print('Form is valid! Navigating to next page.');
+
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
+    } else {
+      // If the form is invalid, validation errors will be displayed automatically.
+      print('Form is invalid! Please fill all required fields.');
     }
   }
 
@@ -70,42 +77,43 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
   void _showLocationRequiredDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Row(
-          children: [
-            Icon(
-              Icons.location_off,
-              color: Theme.of(context).colorScheme.error,
+      builder:
+          (context) => AlertDialog(
+            title: Row(
+              children: [
+                Icon(
+                  Icons.location_off,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+                const SizedBox(width: 8),
+                const Text('Location Required'),
+              ],
             ),
-            const SizedBox(width: 8),
-            const Text('Location Required'),
-          ],
-        ),
-        content: const Text(
-          'Please obtain your current location in the Farm Information section before submitting the registration. '
-          'This is required for accurate farm mapping and data collection.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              // Navigate to farm information page if not already there
-              if (_currentPageIndex != 1) {
-                _pageController.animateToPage(
-                  1,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
-              }
-            },
-            child: const Text('Go to Farm Info'),
+            content: const Text(
+              'Please obtain your current location in the Farm Information section before submitting the registration. '
+              'This is required for accurate farm mapping and data collection.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  // Navigate to farm information page if not already there
+                  if (_currentPageIndex != 1) {
+                    _pageController.animateToPage(
+                      1,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  }
+                },
+                child: const Text('Go to Farm Info'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
     );
   }
 
@@ -128,15 +136,14 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(),
-      ),
+      builder: (context) => const Center(child: CircularProgressIndicator()),
     );
 
+    print('Processing form submission...');
     // Simulate form processing (replace with actual submission logic)
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.of(context).pop(); // Close loading dialog
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
@@ -150,9 +157,6 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
           duration: const Duration(seconds: 3),
         ),
       );
-
-      // Optionally navigate back or reset form
-      // Navigator.of(context).pop();
     });
   }
 
@@ -180,7 +184,10 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
                   });
                 },
                 children: [
-                  FarmerInformationSection(controllers: _farmerControllers),
+                  FarmerInformationSection(
+                    controllers: _farmerControllers,
+                    formKey: _farmerInfoFormKey,
+                  ),
                   FarmInformationSection(
                     controllers: _farmControllers,
                     onLocationStatusChanged: _onLocationStatusChanged,
@@ -195,7 +202,7 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
                 color: Theme.of(context).colorScheme.surface,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 4,
                     offset: const Offset(0, -2),
                   ),
@@ -209,7 +216,9 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
                       margin: const EdgeInsets.only(bottom: 12),
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.orange.shade50,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.error.withValues(alpha: 0.1),
                         border: Border.all(color: Colors.orange.shade200),
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -239,7 +248,8 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
                     onNext: _nextPage,
                     onPrevious: _previousPage,
                     onSubmit: _submitForm,
-                    canSubmit: _hasLocation, // Pass location status to navigation buttons
+                    canSubmit:
+                        _hasLocation, // Pass location status to navigation buttons
                   ),
                 ],
               ),
@@ -248,62 +258,5 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
         ),
       ),
     );
-  }
-}
-
-// Form Controllers Classes
-class FarmerFormControllers {
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController registrationNumberController =
-      TextEditingController();
-  final TextEditingController villageController = TextEditingController();
-
-  String? selectedGender;
-  DateTime? selectedDate;
-
-  void dispose() {
-    firstNameController.dispose();
-    lastNameController.dispose();
-    registrationNumberController.dispose();
-    villageController.dispose();
-  }
-}
-
-class FarmFormControllers {
-  final TextEditingController enumeratorNameController =
-      TextEditingController();
-  final TextEditingController kebeleNameController = TextEditingController();
-  final TextEditingController woredaNameController = TextEditingController();
-  final TextEditingController cooperativeNameController =
-      TextEditingController();
-  final TextEditingController collectingCenterNameController =
-      TextEditingController();
-  final TextEditingController plotNumberController = TextEditingController();
-  final TextEditingController latitudeController = TextEditingController();
-  final TextEditingController longitudeController = TextEditingController();
-  final TextEditingController gpsAccuracyController = TextEditingController();
-  final TextEditingController plotSizeController = TextEditingController();
-  final TextEditingController coffeeAgeController = TextEditingController();
-  final TextEditingController additionalInfoController =
-      TextEditingController();
-
-  String? selectedCoffeeType;
-  int selectedDisturbance = 0;
-  List<XFile> selectedImages = [];
-
-  void dispose() {
-    enumeratorNameController.dispose();
-    kebeleNameController.dispose();
-    woredaNameController.dispose();
-    cooperativeNameController.dispose();
-    collectingCenterNameController.dispose();
-    plotNumberController.dispose();
-    latitudeController.dispose();
-    longitudeController.dispose();
-    gpsAccuracyController.dispose();
-    plotSizeController.dispose();
-    coffeeAgeController.dispose();
-    additionalInfoController.dispose();
   }
 }
