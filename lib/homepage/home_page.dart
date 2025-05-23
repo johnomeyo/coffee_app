@@ -18,7 +18,6 @@ class FarmersHomePage extends StatefulWidget {
 class FarmersHomePageState extends State<FarmersHomePage> {
   final List<Farmer> farmers = generateSampleFarmers();
   String searchQuery = '';
-  String selectedFilter = 'All';
 
   List<Farmer> get filteredFarmers {
     List<Farmer> filtered = farmers;
@@ -36,16 +35,6 @@ class FarmersHomePageState extends State<FarmersHomePage> {
                 farmer.registrationNumber.toLowerCase().contains(
                   searchQuery.toLowerCase(),
                 );
-          }).toList();
-    }
-
-    // Apply category filter
-    if (selectedFilter != 'All') {
-      filtered =
-          filtered.where((farmer) {
-            // Assuming farmer has a status or category field
-            // You can adjust this based on your Farmer model
-            return selectedFilter == 'Active'; // Placeholder logic
           }).toList();
     }
 
@@ -76,7 +65,10 @@ class FarmersHomePageState extends State<FarmersHomePage> {
               },
             ),
             const SizedBox(height: 8),
-            FarmersStats(totalFarmers: farmers.length),
+            FarmersStats(
+              totalFarmers: farmers.length,
+              farmers: generateSampleFarmers(),
+            ),
             const SizedBox(height: 8),
           ],
           Expanded(
@@ -110,5 +102,3 @@ class FarmersHomePageState extends State<FarmersHomePage> {
     );
   }
 }
-
-

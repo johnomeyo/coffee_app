@@ -1,11 +1,12 @@
 // Farmers Statistics Widget
 import 'package:coffee_app/homepage/widgets/stats_item.dart';
+import 'package:coffee_app/models/data_models.dart';
 import 'package:flutter/material.dart';
 
 class FarmersStats extends StatelessWidget {
   final int totalFarmers;
-
-  const FarmersStats({super.key, required this.totalFarmers});
+final List<Farmer> farmers;
+  const FarmersStats({super.key, required this.totalFarmers, required this.farmers});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class FarmersStats extends StatelessWidget {
               StatItem(
                 icon: Icons.agriculture,
                 label: 'Active Farms',
-                value: _getTotalFarms().toString(),
+                value: _getTotalFarms(farmers).toString(),
               ),
             ],
           ),
@@ -34,8 +35,8 @@ class FarmersStats extends StatelessWidget {
     );
   }
 
-  int _getTotalFarms() {
-    // This would typically calculate from actual data
-    return totalFarmers * 2; // Placeholder calculation
-  }
+int _getTotalFarms(List<Farmer> farmers) {
+  return farmers.fold(0, (total, farmer) => total + farmer.farms.length);
+}
+
 }

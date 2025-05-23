@@ -25,7 +25,7 @@ class FarmInfoCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    farm.name,
+                    farm.enumeratorName,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -55,9 +55,9 @@ class FarmInfoCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            FarmDetailRow(label: 'Size', value: '${farm.size} acres'),
-            FarmDetailRow(label: 'Crop Type', value: farm.cropType),
-            FarmDetailRow(label: 'Location', value: farm.location),
+            FarmDetailRow(label: 'Size', value: '${farm.plotSize} ha'),
+            FarmDetailRow(label: 'Crop Type', value: farm.coffeeType),
+            FarmDetailRow(label: 'Location', value: farm.collectingCenterName),
             if (farm.additionalInfo != null &&
                 farm.additionalInfo!.isNotEmpty) ...[
               const SizedBox(height: 8),
@@ -104,7 +104,7 @@ class FarmInfoCard extends StatelessWidget {
                   ),
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Edit farm: ${farm.name}')),
+                      SnackBar(content: Text('Edit farm: ${farm.enumeratorName}')),
                     );
                   },
                 ),
