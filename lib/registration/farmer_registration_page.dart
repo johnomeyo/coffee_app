@@ -1,8 +1,10 @@
+import 'package:coffee_app/models/data_models.dart';
 import 'package:coffee_app/registration/widgets/farm_info_section.dart';
 import 'package:coffee_app/registration/widgets/farmer_info_section.dart';
 import 'package:coffee_app/registration/widgets/form_controller.dart';
 import 'package:coffee_app/registration/widgets/registration_navigation_btns.dart';
 import 'package:coffee_app/registration/widgets/registrationn_progress_indicator.dart';
+import 'package:coffee_app/services/hive_storage_service.dart';
 import 'package:flutter/material.dart';
 
 // Main Registration Page
@@ -117,7 +119,7 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm(FarmFormControllers farmControllers) {
     // First check if location has been obtained
     if (!_hasLocation) {
       _showLocationRequiredDialog();
@@ -129,6 +131,51 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
       // Handle form submission
       _processFormSubmission();
     }
+
+    final hiveStorage = HiveStorage();
+    hiveStorage.addFarmer(
+      Farmer(
+        id: _farmerControllers.registrationNumberController.text,
+        firstName: _farmerControllers.firstNameController.text,
+        lastName: _farmerControllers.lastNameController.text,
+        registrationNumber:_farmerControllers.registrationNumberController.text,
+        gender: _farmerControllers.selectedGender.toString(),
+        dateOfBirth: _farmerControllers.selectedDate!,
+        village: _farmerControllers.villageController.text,
+        farms: [
+          Farm(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            enumeratorName: _farmControllers.enumeratorNameController.text,
+            kebeleName: _farmControllers.kebeleNameController.text,
+            woredaName: _farmControllers.woredaNameController.text,
+            cooperativeName: _farmControllers.cooperativeNameController.text,
+            farmerName: _farmerControllers.firstNameController.text,
+            collectingCenterName:
+                _farmControllers.collectingCenterNameController.text,
+            plotNumber: _farmControllers.plotNumberController.text,
+            latitude: double.tryParse(
+                _farmControllers.latitudeController.text)!,
+            longitude: double.tryParse(
+                _farmControllers.longitudeController.text)!,
+            gpsAccuracy: double.tryParse( 
+                _farmControllers.gpsAccuracyController.text)!,
+            plotSize: double.tryParse(
+                _farmControllers.plotSizeController.text)!,
+            coffeeAge: int.tryParse(
+                _farmControllers.coffeeAgeController.text)!,
+            coffeeType: _farmControllers.selectedCoffeeType.toString(),
+            additionalInfo: _farmControllers.additionalInfoController.text,
+            // Assuming disturbance is an integer value
+            disturbance: _farmControllers.selectedDisturbance,
+            geolocationFlagged: false,
+            isApproved: false,
+            images: _farmControllers.selectedImages
+                .map((image) => image.path)
+                .toList(),
+          ),
+        ],
+      ),
+    );
   }
 
   void _processFormSubmission() {
@@ -139,7 +186,6 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
       builder: (context) => const Center(child: CircularProgressIndicator()),
     );
 
-    print('Processing form submission...');
     // Simulate form processing (replace with actual submission logic)
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.of(context).pop(); // Close loading dialog
@@ -178,6 +224,7 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
             Expanded(
               child: PageView(
                 controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (index) {
                   setState(() {
                     _currentPageIndex = index;
@@ -247,7 +294,7 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
                     currentPageIndex: _currentPageIndex,
                     onNext: _nextPage,
                     onPrevious: _previousPage,
-                    onSubmit: _submitForm,
+                    onSubmit: () => _submitForm(_farmControllers),
                     canSubmit:
                         _hasLocation, // Pass location status to navigation buttons
                   ),

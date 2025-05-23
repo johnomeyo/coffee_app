@@ -31,7 +31,7 @@ class FarmsSection extends StatelessWidget {
           itemCount: farms.length,
           itemBuilder: (context, index) {
             return FarmInfoCard(
-                farm: farms[index], onImageTap: onImageTap);
+                farm: farms[index], onImageTap: onImageTap, );
           },
         ),
       ],
