@@ -8,20 +8,18 @@ import 'package:flutter/material.dart';
 
 class FarmerInformationSection extends StatelessWidget {
   final FarmerFormControllers controllers;
-  // 1. Add a required GlobalKey for the Form
   final GlobalKey<FormState> formKey;
 
   const FarmerInformationSection({
     Key? key,
     required this.controllers,
-    required this.formKey, // 2. Add it to the constructor
+    required this.formKey,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // 3. Wrap your scrollable column with a Form widget
     return Form(
-      key: formKey, // 4. Assign the key to the Form
+      key: formKey,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -32,37 +30,56 @@ class FarmerInformationSection extends StatelessWidget {
               icon: Icons.person_outline,
             ),
             const SizedBox(height: 16),
-            FarmerImagePicker(
-              // initialPath: controllers.imageUrl,
-              onImageSelected: (path) {
-                controllers.imageUrl = path;
+            FormField<String>(
+              initialValue: controllers.imageUrl,
+              validator: (value) =>
+                  value == null || value.isEmpty ? 'Please select an image' : null,
+              builder: (FormFieldState<String> state) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FarmerImagePicker(
+                      onImageSelected: (path) {
+                        controllers.imageUrl = path;
+                        state.didChange(path); // Update FormField state
+                      },
+                    ),
+                    if (state.hasError)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0, left: 12.0),
+                        child: Text(
+                          state.errorText!,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                  ],
+                );
               },
             ),
             const SizedBox(height: 16),
             FarmTextfield(
               controller: controllers.firstNameController,
               label: 'First Name',
-              validator:
-                  (value) =>
-                      value?.isEmpty == true ? 'First name is required' : null,
+              validator: (value) =>
+                  value?.isEmpty == true ? 'First name is required' : null,
             ),
             const SizedBox(height: 16),
             FarmTextfield(
               controller: controllers.lastNameController,
               label: 'Last Name',
-              validator:
-                  (value) =>
-                      value?.isEmpty == true ? 'Last name is required' : null,
+              validator: (value) =>
+                  value?.isEmpty == true ? 'Last name is required' : null,
             ),
             const SizedBox(height: 16),
             FarmTextfield(
               controller: controllers.registrationNumberController,
               label: 'Registration Number',
-              validator:
-                  (value) =>
-                      value?.isEmpty == true
-                          ? 'Registration number is required'
-                          : null,
+              validator: (value) => value?.isEmpty == true
+                  ? 'Registration number is required'
+                  : null,
             ),
             const SizedBox(height: 16),
             GenderSelectionWidget(
@@ -79,9 +96,8 @@ class FarmerInformationSection extends StatelessWidget {
             FarmTextfield(
               controller: controllers.villageController,
               label: 'Village',
-              validator:
-                  (value) =>
-                      value?.isEmpty == true ? 'Village is required' : null,
+              validator: (value) =>
+                  value?.isEmpty == true ? 'Village is required' : null,
             ),
           ],
         ),
