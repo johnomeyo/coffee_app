@@ -5,6 +5,7 @@ import 'package:coffee_app/homepage/widgets/farmers_list.dart' show FarmersList;
 import 'package:coffee_app/homepage/widgets/search_bar.dart';
 import 'package:coffee_app/models/data_models.dart' show Farmer;
 import 'package:coffee_app/registration/farmer_registration_page.dart';
+import 'package:coffee_app/services/auth_service.dart';
 import 'package:coffee_app/services/hive_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -77,12 +78,16 @@ class FarmersHomePageState extends State<FarmersHomePage> {
             onPressed: () async {
               try {
                 // Access the already-opened box
-                final box = Hive.box<Farmer>('farmersBox');
+                // final box = Hive.box<Farmer>('farmersBox');
 
-                // Clear all data in the box
-                await box.clear();
-
-
+                // // Clear all data in the box
+                // await box.clear();
+                final authservice = AuthService();
+                await authservice.signOut();
+                // Show a success message
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('Data cleared')));
               } catch (e) {
                 // Handle error if box is not open or something goes wrong
                 print('Error clearing box: $e');

@@ -6,6 +6,9 @@ import 'package:coffee_app/auth/widgets/custom_textfield.dart';
 import 'package:coffee_app/auth/widgets/divider_with_text.dart';
 import 'package:coffee_app/auth/widgets/social_sign_in_btn.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth for User type
+import '../../services/auth_service.dart'; // Adjust path as per your project structure
+import 'package:coffee_app/homepage/home_page.dart'; // Assuming this is where you navigate after successful signup
 
 class SignUpForm extends StatefulWidget {
   final VoidCallback onToggleMode;
@@ -18,12 +21,15 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
+  final _nameController = TextEditingController(); // Name won't be used for Firebase Auth directly
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _isLoading = false;
   bool _acceptTerms = false;
+
+  // Instantiate your AuthService
+  final AuthService _authService = AuthService();
 
   @override
   void dispose() {
@@ -38,38 +44,79 @@ class _SignUpFormState extends State<SignUpForm> {
     if (!_formKey.currentState!.validate()) return;
 
     if (!_acceptTerms) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please accept the terms and conditions')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please accept the terms and conditions')),
+        );
+      }
       return;
     }
 
     setState(() => _isLoading = true);
 
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 2));
+    User? user = await _authService.signUpWithEmailAndPassword(
+      _emailController.text,
+      _passwordController.text,
+    );
 
     setState(() => _isLoading = false);
 
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Account created successfully!')),
-      );
+    if (user != null) {
+      // User created successfully
+      // You might want to update the user's display name here if needed,
+      // though it's optional for just authentication.
+      // await user.updateDisplayName(_nameController.text);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Account created successfully!')),
+        );
+        // Navigate to the home page or a confirmation page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const FarmersHomePage()), // Navigate to your home page
+        );
+      }
+    } else {
+      // Handle the error (e.g., email already in use, weak password)
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to create account. Please try again.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
   Future<void> _signUpWithGoogle() async {
     setState(() => _isLoading = true);
 
-    // Simulate Google Sign Up
-    await Future.delayed(const Duration(seconds: 2));
+    User? user = await _authService.signInWithGoogle(); // Re-use signInWithGoogle
 
     setState(() => _isLoading = false);
 
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Google sign up successful!')),
-      );
+    if (user != null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Google sign up successful!')),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const FarmersHomePage()),
+        );
+      }
+    } else {
+      // Handle the error
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Google sign up failed. Please try again.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 

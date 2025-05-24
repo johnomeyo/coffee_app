@@ -1,14 +1,17 @@
-import 'package:coffee_app/homepage/home_page.dart';
+import 'package:coffee_app/firebase_options.dart';
 import 'package:coffee_app/models/data_models.dart';
+import 'package:coffee_app/services/auth_gate.dart';
 import 'package:coffee_app/services/hive_storage_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async{
-    WidgetsFlutterBinding.ensureInitialized();
 
-  WidgetsFlutterBinding.ensureInitialized();
-  
+    WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // Initialize Hive
   await Hive.initFlutter();
   
@@ -43,7 +46,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       themeMode: ThemeMode.system,
-      home: const FarmersHomePage(),
+      home: const AuthGate(),
     );
   }
 }

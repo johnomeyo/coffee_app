@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "199887621647",
+    "project_id": "lumis-8fc42",
+    "storage_bucket": "lumis-8fc42.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199887621647:android:4c1b0ecacd6449ce6d9d7a",
+        "android_client_info": {
+          "package_name": "com.example.coffee_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "199887621647-eqav7a18bjha0nelrviq62mbrnbjgle3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.coffee_app",
+            "certificate_hash": "b6343e289ce22f003b27442307923447a149bc3b"
+          }
+        },
+        {
+          "client_id": "199887621647-e3f7oar8lmh9of1rqc6u6mmqumou7kbv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACzfKK1XC0bhaPikiZrYqVA1PxL29JMgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "199887621647-e3f7oar8lmh9of1rqc6u6mmqumou7kbv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
