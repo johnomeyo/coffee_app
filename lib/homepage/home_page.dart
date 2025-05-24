@@ -30,8 +30,8 @@ class FarmersHomePageState extends State<FarmersHomePage> {
   Future<void> _initializeHiveBox() async {
     try {
       // Ensure Hive is initialized and the box is opened
-      if (!Hive.isBoxOpen(HiveStorage.boxName)) {
-        await Hive.openBox<Farmer>(HiveStorage.boxName);
+      if (!Hive.isBoxOpen(HiveStorage.farmersBoxName)) {
+        await Hive.openBox<Farmer>(HiveStorage.farmersBoxName);
       }
       setState(() {
         _isBoxInitialized = true;
@@ -77,30 +77,20 @@ class FarmersHomePageState extends State<FarmersHomePage> {
             icon: const Icon(Icons.filter_list),
             onPressed: () async {
               try {
-                // Access the already-opened box
-                // final box = Hive.box<Farmer>('farmersBox');
 
-                // // Clear all data in the box
-                // await box.clear();
                 final authservice = AuthService();
                 await authservice.signOut();
-                // Show a success message
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('Data cleared')));
+
               } catch (e) {
                 // Handle error if box is not open or something goes wrong
                 print('Error clearing box: $e');
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text('Failed to clear data')));
               }
             },
           ),
         ],
       ),
       body: ValueListenableBuilder<Box<Farmer>>(
-        valueListenable: Hive.box<Farmer>(HiveStorage.boxName).listenable(),
+        valueListenable: Hive.box<Farmer>(HiveStorage.farmersBoxName).listenable(),
         builder: (context, box, _) {
           final farmers = box.values.toList();
           final filteredFarmers = _filterFarmers(farmers);

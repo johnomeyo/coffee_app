@@ -6,20 +6,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-void main() async{
-
-    WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // Initialize Hive
   await Hive.initFlutter();
-  
+
   // Register the Farmer adapter (assuming Farmer is a Hive type)
   Hive.registerAdapter(FarmerAdapter());
   Hive.registerAdapter(FarmAdapter());
+
   // Open the farmersBox
-  await Hive.openBox<Farmer>(HiveStorage.boxName);
+  await Hive.openBox<Farmer>(HiveStorage.farmersBoxName);
+  await Hive.openBox<Farm>(HiveStorage.farmsBoxName);
+
   runApp(const MyApp());
 }
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:coffee_app/homepage/pages/farmers_details_page/widgets/details_row.dart';
 import 'package:coffee_app/models/data_models.dart' show Farmer;
 import 'package:flutter/material.dart';
@@ -9,6 +11,8 @@ class FarmerInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasImage = farmer.imageUrl.isNotEmpty;
+
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -21,12 +25,21 @@ class FarmerInfoCard extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 30,
-                  backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                  child: Icon(
-                    Icons.person,
-                    size: 40,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
+                  backgroundColor:
+                      Theme.of(context).colorScheme.primaryContainer,
+                  backgroundImage:
+                      hasImage ? FileImage(File(farmer.imageUrl)) : null,
+                  child:
+                      !hasImage
+                          ? Icon(
+                            Icons.person,
+                            size: 40,
+                            color:
+                                Theme.of(
+                                  context,
+                                ).colorScheme.onPrimaryContainer,
+                          )
+                          : null,
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -43,10 +56,7 @@ class FarmerInfoCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         'Registration: ${farmer.registrationNumber}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                       ),
                     ],
                   ),
@@ -60,10 +70,11 @@ class FarmerInfoCard extends StatelessWidget {
             DetailRow(label: 'Gender', value: farmer.gender),
             DetailRow(label: 'Village', value: farmer.village),
             DetailRow(
-                label: 'Date of Birth',
-                value:
-                    '${farmer.dateOfBirth.day}/${farmer.dateOfBirth.month}/${farmer.dateOfBirth.year}'),
-            DetailRow(label: 'Total Farms', value: '${farmer.farms.length}'),
+              label: 'Date of Birth',
+              value:
+                  '${farmer.dateOfBirth.day}/${farmer.dateOfBirth.month}/${farmer.dateOfBirth.year}',
+            ),
+            DetailRow(label: 'Total Farms', value: '${farmer.farmIds.length}'),
           ],
         ),
       ),

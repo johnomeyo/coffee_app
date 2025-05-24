@@ -119,64 +119,72 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
     );
   }
 
-  void _submitForm(FarmFormControllers farmControllers) {
-    // First check if location has been obtained
-    if (!_hasLocation) {
-      _showLocationRequiredDialog();
-      return;
-    }
+void _submitForm(FarmFormControllers _farmControllers) async {
+  // First check if location has been obtained
+  if (!_hasLocation) {
+    _showLocationRequiredDialog();
+    return;
+  }
 
-    // Then validate the form
+  // Then validate the form
     if (_formKey.currentState!.validate()) {
       // Handle form submission
       _processFormSubmission();
     }
 
-    final hiveStorage = HiveStorage();
-    hiveStorage.addFarmer(
-      Farmer(
-        id: _farmerControllers.registrationNumberController.text,
-        firstName: _farmerControllers.firstNameController.text,
-        lastName: _farmerControllers.lastNameController.text,
-        registrationNumber:_farmerControllers.registrationNumberController.text,
-        gender: _farmerControllers.selectedGender.toString(),
-        dateOfBirth: _farmerControllers.selectedDate!,
-        village: _farmerControllers.villageController.text,
-        farms: [
-          Farm(
-            id: DateTime.now().millisecondsSinceEpoch.toString(),
-            enumeratorName: _farmControllers.enumeratorNameController.text,
-            kebeleName: _farmControllers.kebeleNameController.text,
-            woredaName: _farmControllers.woredaNameController.text,
-            cooperativeName: _farmControllers.cooperativeNameController.text,
-            farmerName: _farmerControllers.firstNameController.text,
-            collectingCenterName:
-                _farmControllers.collectingCenterNameController.text,
-            plotNumber: _farmControllers.plotNumberController.text,
-            latitude: double.tryParse(
-                _farmControllers.latitudeController.text)!,
-            longitude: double.tryParse(
-                _farmControllers.longitudeController.text)!,
-            gpsAccuracy: double.tryParse( 
-                _farmControllers.gpsAccuracyController.text)!,
-            plotSize: double.tryParse(
-                _farmControllers.plotSizeController.text)!,
-            coffeeAge: int.tryParse(
-                _farmControllers.coffeeAgeController.text)!,
-            coffeeType: _farmControllers.selectedCoffeeType.toString(),
-            additionalInfo: _farmControllers.additionalInfoController.text,
-            // Assuming disturbance is an integer value
-            disturbance: _farmControllers.selectedDisturbance,
-            geolocationFlagged: false,
-            isApproved: false,
-            images: _farmControllers.selectedImages
-                .map((image) => image.path)
-                .toList(),
-          ),
-        ],
-      ),
-    );
-  }
+  // Generate unique ID for the farm
+  final farmId = DateTime.now().millisecondsSinceEpoch.toString();
+
+  // Initialize storage
+  final hiveStorage = HiveStorage();
+
+  // Create Farm object
+  final farm = Farm(
+    id: farmId,
+    farmerId: _farmerControllers.registrationNumberController.text,
+    enumeratorName: _farmControllers.enumeratorNameController.text,
+    kebeleName: _farmControllers.kebeleNameController.text,
+    woredaName: _farmControllers.woredaNameController.text,
+    cooperativeName: _farmControllers.cooperativeNameController.text,
+    farmerName: _farmerControllers.firstNameController.text,
+    collectingCenterName: _farmControllers.collectingCenterNameController.text,
+    plotNumber: _farmControllers.plotNumberController.text,
+    latitude: double.tryParse(_farmControllers.latitudeController.text)!,
+    longitude: double.tryParse(_farmControllers.longitudeController.text)!,
+    gpsAccuracy: double.tryParse(_farmControllers.gpsAccuracyController.text)!,
+    plotSize: double.tryParse(_farmControllers.plotSizeController.text)!,
+    coffeeAge: int.tryParse(_farmControllers.coffeeAgeController.text)!,
+    coffeeType: _farmControllers.selectedCoffeeType.toString(),
+    additionalInfo: _farmControllers.additionalInfoController.text,
+    disturbance: _farmControllers.selectedDisturbance,
+    geolocationFlagged: false,
+    isApproved: false,
+    images: _farmControllers.selectedImages
+  );
+
+  // Save the farm
+  await hiveStorage.addFarm(farm);
+
+  // Create Farmer object (without `farms` list if you use `farmerId` in Farm)
+  final farmer = Farmer(
+    id: _farmerControllers.registrationNumberController.text,
+    firstName: _farmerControllers.firstNameController.text,
+    lastName: _farmerControllers.lastNameController.text,
+    registrationNumber: _farmerControllers.registrationNumberController.text,
+    gender: _farmerControllers.selectedGender.toString(),
+    dateOfBirth: _farmerControllers.selectedDate!,
+    village: _farmerControllers.villageController.text,
+    imageUrl: _farmerControllers.imageUrl, // or provide if available
+    // Optionally include farmIds if your model supports it
+    farmIds: [farmId], // if you added this field to Farmer
+  );
+
+  // Save the farmer
+  await hiveStorage.addFarmer(farmer);
+
+  print('Farmer and Farm saved successfully.');
+}
+
 
   void _processFormSubmission() {
     // Show loading indicator

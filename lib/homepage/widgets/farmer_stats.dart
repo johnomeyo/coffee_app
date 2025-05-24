@@ -36,7 +36,7 @@ final List<Farmer> farmers;
   }
 
 int _getTotalFarms(List<Farmer> farmers) {
-  return farmers.fold(0, (total, farmer) => total + farmer.farms.length);
+  return farmers.fold(0, (total, farmer) => total + farmer.farmIds.length);
 }
 
 }

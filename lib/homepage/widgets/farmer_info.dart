@@ -20,7 +20,7 @@ class FarmerInfo extends StatelessWidget {
         const SizedBox(width: 8),
         InfoChip(
           icon: Icons.agriculture,
-          label: '${farmer.farms.length} farms',
+          label: '${farmer.farmIds.length} farms',
         ),
       ],
     );

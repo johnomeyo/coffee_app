@@ -1,5 +1,6 @@
 import 'package:coffee_app/registration/widgets/date_picker.dart';
 import 'package:coffee_app/registration/widgets/farm_textfield.dart';
+import 'package:coffee_app/registration/widgets/farmer_image_picker.dart';
 import 'package:coffee_app/registration/widgets/form_controller.dart';
 import 'package:coffee_app/registration/widgets/gender_selection_widget.dart';
 import 'package:coffee_app/registration/widgets/section_header.dart';
@@ -31,26 +32,37 @@ class FarmerInformationSection extends StatelessWidget {
               icon: Icons.person_outline,
             ),
             const SizedBox(height: 16),
+            FarmerImagePicker(
+              // initialPath: controllers.imageUrl,
+              onImageSelected: (path) {
+                controllers.imageUrl = path;
+              },
+            ),
+            const SizedBox(height: 16),
             FarmTextfield(
               controller: controllers.firstNameController,
               label: 'First Name',
-              validator: (value) =>
-                  value?.isEmpty == true ? 'First name is required' : null,
+              validator:
+                  (value) =>
+                      value?.isEmpty == true ? 'First name is required' : null,
             ),
             const SizedBox(height: 16),
             FarmTextfield(
               controller: controllers.lastNameController,
               label: 'Last Name',
-              validator: (value) =>
-                  value?.isEmpty == true ? 'Last name is required' : null,
+              validator:
+                  (value) =>
+                      value?.isEmpty == true ? 'Last name is required' : null,
             ),
             const SizedBox(height: 16),
             FarmTextfield(
               controller: controllers.registrationNumberController,
               label: 'Registration Number',
-              validator: (value) => value?.isEmpty == true
-                  ? 'Registration number is required'
-                  : null,
+              validator:
+                  (value) =>
+                      value?.isEmpty == true
+                          ? 'Registration number is required'
+                          : null,
             ),
             const SizedBox(height: 16),
             GenderSelectionWidget(
@@ -67,8 +79,9 @@ class FarmerInformationSection extends StatelessWidget {
             FarmTextfield(
               controller: controllers.villageController,
               label: 'Village',
-              validator: (value) =>
-                  value?.isEmpty == true ? 'Village is required' : null,
+              validator:
+                  (value) =>
+                      value?.isEmpty == true ? 'Village is required' : null,
             ),
           ],
         ),

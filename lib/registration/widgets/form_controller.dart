@@ -1,7 +1,5 @@
-
 // Form Controllers Classes
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class FarmerFormControllers {
   final TextEditingController firstNameController = TextEditingController();
@@ -12,7 +10,7 @@ class FarmerFormControllers {
 
   String? selectedGender;
   DateTime? selectedDate;
-
+  String imageUrl = '';
   void dispose() {
     firstNameController.dispose();
     lastNameController.dispose();
@@ -41,7 +39,7 @@ class FarmFormControllers {
 
   String? selectedCoffeeType;
   int selectedDisturbance = 0;
-  List<XFile> selectedImages = [];
+  List<String> selectedImages = [];
 
   void dispose() {
     enumeratorNameController.dispose();
