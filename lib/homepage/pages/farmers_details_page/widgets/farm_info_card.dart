@@ -136,7 +136,7 @@ class _FarmInfoCardState extends State<FarmInfoCard> {
 
                 // Delete icon button (always visible)
                 IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.red),
+                  icon: const Icon(Icons.delete_outlined, color: Colors.red),
                   onPressed: _handleDeleteFarm,
                   tooltip: 'Delete Farm',
                 ),
