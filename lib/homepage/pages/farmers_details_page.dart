@@ -1,17 +1,39 @@
-import 'package:coffee_app/homepage/pages/farmers_details_page/widgets/farmer_info_card.dart'
-    show FarmerInfoCard;
 import 'package:coffee_app/homepage/pages/farmers_details_page/widgets/farm_section.dart';
+import 'package:coffee_app/homepage/pages/farmers_details_page/widgets/farmer_info_card.dart';
 import 'package:coffee_app/homepage/pages/farmers_details_page/widgets/image_dialog_content.dart';
-import 'package:coffee_app/models/data_models.dart' show Farm, Farmer;
+import 'package:coffee_app/models/data_models.dart';
 import 'package:coffee_app/registration/widgets/add_new_farm_page.dart';
 import 'package:coffee_app/services/hive_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class FarmerDetailsPage extends StatelessWidget {
+class FarmerDetailsPage extends StatefulWidget {
   final Farmer farmer;
 
   const FarmerDetailsPage({super.key, required this.farmer});
+
+  @override
+  State<FarmerDetailsPage> createState() => _FarmerDetailsPageState();
+}
+
+class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
+  late List<Farm> farms;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFarms();
+  }
+
+  Future<void> _loadFarms() async {
+    final loadedFarms = widget.farmer.farmIds
+        .map((farmId) => Hive.box<Farm>(HiveStorage.farmsBoxName).get(farmId))
+        .whereType<Farm>()
+        .toList();
+    setState(() {
+      farms = loadedFarms;
+    });
+  }
 
   void _showImageDialog(BuildContext context, String imageUrl) {
     showDialog(
@@ -26,11 +48,13 @@ class FarmerDetailsPage extends StatelessWidget {
   Future<void> _addNewFarm(BuildContext context) async {
     final result = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
-        builder: (_) => AddFarmPage(farmer: farmer),
+        builder: (_) => AddFarmPage(farmer: widget.farmer),
       ),
     );
 
     if (result == true && context.mounted) {
+      await _loadFarms(); // Refresh farms list
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('New farm added successfully'),
@@ -44,17 +68,9 @@ class FarmerDetailsPage extends StatelessWidget {
     }
   }
 
-  List<Farm> _getFarms() {
-    return farmer.farmIds
-        .map((farmId) => Hive.box<Farm>(HiveStorage.farmsBoxName).get(farmId))
-        .whereType<Farm>()
-        .toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final farms = _getFarms();
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -67,7 +83,7 @@ class FarmerDetailsPage extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          farmer.fullName,
+          widget.farmer.fullName,
           style: theme.textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.w600,
             color: theme.colorScheme.onSurface,
@@ -90,13 +106,13 @@ class FarmerDetailsPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.shadowColor.withValues(alpha: 0.08),
+                          color: theme.shadowColor.withAlpha(20),
                           blurRadius: 16,
                           offset: const Offset(0, 4),
                         ),
                       ],
                     ),
-                    child: FarmerInfoCard(farmer: farmer),
+                    child: FarmerInfoCard(farmer: widget.farmer),
                   ),
                   
                   const SizedBox(height: 32),
@@ -120,7 +136,7 @@ class FarmerDetailsPage extends StatelessWidget {
                           Text(
                             '${farms.length} ${farms.length == 1 ? 'farm' : 'farms'} registered',
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                              color: theme.colorScheme.onSurface.withAlpha(150),
                             ),
                           ),
                         ],
@@ -148,7 +164,6 @@ class FarmerDetailsPage extends StatelessWidget {
             ),
           ),
           
-          // Bottom spacing
           const SliverPadding(
             padding: EdgeInsets.only(bottom: 24),
           ),
@@ -163,7 +178,7 @@ class FarmerDetailsPage extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             theme.colorScheme.primary,
-            theme.colorScheme.primary.withValues(alpha: 0.8),
+            theme.colorScheme.primary.withAlpha(200),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -171,7 +186,7 @@ class FarmerDetailsPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: theme.colorScheme.primary.withValues(alpha: 0.3),
+            color: theme.colorScheme.primary.withAlpha(80),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -215,7 +230,7 @@ class FarmerDetailsPage extends StatelessWidget {
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+          color: theme.colorScheme.outline.withAlpha(50),
         ),
       ),
       child: Column(
@@ -223,7 +238,7 @@ class FarmerDetailsPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withValues(alpha: 0.1),
+              color: theme.colorScheme.primary.withAlpha(30),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -242,9 +257,9 @@ class FarmerDetailsPage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Start by adding the first farm for ${farmer.fullName}',
+            'Start by adding the first farm for ${widget.farmer.fullName}',
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+              color: theme.colorScheme.onSurface.withAlpha(150),
             ),
             textAlign: TextAlign.center,
           ),

@@ -27,11 +27,11 @@ class _EditFarmerDialogState extends State<EditFarmerDialog> {
     super.initState();
     final farmer = widget.farmer;
 
-    firstNameController = TextEditingController(text: farmer.fullName);
+    firstNameController = TextEditingController(text: farmer.firstName);
     registrationNumberController = TextEditingController(
       text: farmer.registrationNumber,
     );
-    lastNameController = TextEditingController(text: farmer.age.toString());
+    lastNameController = TextEditingController(text: farmer.lastName.toString());
     genderController = TextEditingController(text: farmer.gender);
     villageController = TextEditingController(text: farmer.village);
   }
