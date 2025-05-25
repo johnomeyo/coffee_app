@@ -37,7 +37,6 @@ class FarmerCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.location_on, size: 10, color: Theme.of(context).colorScheme.primary),
-                  // const SizedBox(width: 4),
                   Text(
                     farmer.village,                    
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(

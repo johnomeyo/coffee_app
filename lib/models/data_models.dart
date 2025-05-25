@@ -7,28 +7,28 @@ class Farm extends HiveObject {
   final String id;
 
   @HiveField(1)
-  final String farmerId; // New field to link to Farmer
+  final String farmerId;
 
   @HiveField(2)
-  final String enumeratorName;
+  String enumeratorName;
 
   @HiveField(3)
-  final String kebeleName;
+  String kebeleName;
 
   @HiveField(4)
-  final String woredaName;
+  String woredaName;
 
   @HiveField(5)
-  final String cooperativeName;
+  String cooperativeName;
 
   @HiveField(6)
-  final String farmerName;
+  String farmerName;
 
   @HiveField(7)
-  final String collectingCenterName;
+  String collectingCenterName;
 
   @HiveField(8)
-  final String plotNumber;
+  String plotNumber;
 
   @HiveField(9)
   final double latitude;
@@ -37,31 +37,31 @@ class Farm extends HiveObject {
   final double longitude;
 
   @HiveField(11)
-  final double gpsAccuracy;
+  double gpsAccuracy;
 
   @HiveField(12)
-  final double plotSize;
+  double plotSize;
 
   @HiveField(13)
-  final int coffeeAge;
+  int coffeeAge;
 
   @HiveField(14)
-  final String coffeeType;
+  String coffeeType;
 
   @HiveField(15)
-  final int disturbance;
+  int disturbance;
 
   @HiveField(16)
-  final bool geolocationFlagged;
+  bool geolocationFlagged;
 
   @HiveField(17)
-  final bool isApproved;
+  bool isApproved;
 
   @HiveField(18)
-  final List<String> images;
+  List<String> images;
 
   @HiveField(19)
-  final String? additionalInfo;
+  String? additionalInfo;
 
   Farm({
     required this.id,
@@ -86,28 +86,29 @@ class Farm extends HiveObject {
     this.additionalInfo,
   });
 }
+
 @HiveType(typeId: 1)
 class Farmer extends HiveObject {
   @HiveField(0)
   final String id;
 
   @HiveField(1)
-  final String firstName;
+  String firstName;
 
   @HiveField(2)
-  final String lastName;
+  String lastName;
 
   @HiveField(3)
-  final String registrationNumber;
+  String registrationNumber;
 
   @HiveField(4)
-  final String gender;
+  String gender;
 
   @HiveField(5)
   final DateTime dateOfBirth;
 
   @HiveField(6)
-  final String village;
+  String village;
 
   @HiveField(7)
   final String imageUrl; 
